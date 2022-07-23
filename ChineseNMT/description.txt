@@ -1,0 +1,30 @@
+本文档用以说明model各个部分的组成;
+
+directories:
+
+data: 
+json文件夹里面存放着 raw data, 用来生成英文和中文的语料库; 
+corpus.cn/en 中每一行对应一句中文/英文句子;
+corpus.cn/en 通过运行 get_corpus.py 来得到
+
+experiment:
+里面存放了项目开发者的模型训练日志;
+models文件夹存放了 训练好的 .pth 模型文件;
+
+tokenizer:
+tokenize.py 通过利用 corpus.en/cn 来构建 词汇表vocabulary;
+.vocab 文件记录了中英文的vocab
+.model 文件是sentencepiece输出的模型文件(这里采用的是 BPE分词 来构建 vocab)
+
+
+files:
+逻辑链: config -> def model -> data load -> train -> test 
+config.py: 设置了 Transformer 模型参数;
+utils.py: 存放了一些用以实现特定功能的函数;
+data_loader.py 定义了 Dataset, 同时还定义 Batch 从而确定了后续使用 DataLoader 来访问 Dataset 时 一个batch内每个元素的定义;
+model.py 写明了模型的各个部分的定义;
+main.py  主要定义了学习率调整的代码, 以及样句翻译的代码
+train.py 定义了训练和测试的代码, 同时也写明了 Transformer 翻译句子的过程 (里面定义了用贪心算法生成翻译句子的函数)
+debug.py 用来 debug 的文件, 主要是观察各个部分的输出, 变量值
+beam_decoder.py 定义了 beam search 的代码, 从而实现 束搜索 来完成语句翻译
+translate.py 定义了翻译给定一个或多个英文句子的函数;
